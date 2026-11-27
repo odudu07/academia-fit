@@ -1,6 +1,6 @@
 # 🏋️ Academia Fit
 
-![CI](https://github.com/SEU-USUARIO/academia-fit/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/odudu07/academia-fit/actions/workflows/ci.yml/badge.svg)
 
 API REST para gerenciamento de academia, desenvolvida com **Java 21 + Spring Boot 3**.
 Academias pequenas controlam matrículas e aulas coletivas em planilhas, o que gera alunos com plano vencido
