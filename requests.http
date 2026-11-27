@@ -1,0 +1,82 @@
+### Roteiro de demonstração (VS Code "REST Client" ou IntelliJ HTTP Client)
+### Ajuste as datas para o futuro antes de executar.
+
+@host = http://localhost:8080
+
+### 1. Criar plano -> 201
+POST {{host}}/planos
+Content-Type: application/json
+
+{ "nome": "Trimestral", "valorMensal": 129.90, "duracaoMeses": 3 }
+
+### 2. Criar aluno -> 201
+POST {{host}}/alunos
+Content-Type: application/json
+
+{ "nome": "Carlos Lima", "email": "carlos@email.com", "cpf": "12345678901", "dataNascimento": "1995-05-10" }
+
+### 3. Aluno com dados inválidos -> 400
+POST {{host}}/alunos
+Content-Type: application/json
+
+{ "nome": "", "email": "nao-e-email", "cpf": "123", "dataNascimento": "1995-05-10" }
+
+### 4. Criar aula (capacidade 1 para demonstrar lotação) -> 201
+POST {{host}}/aulas
+Content-Type: application/json
+
+{ "nome": "Spinning", "instrutor": "Prof. Ana", "dataHora": "2030-01-15T18:00:00", "capacidade": 1 }
+
+### 5. Reservar sem matrícula -> 422
+POST {{host}}/reservas
+Content-Type: application/json
+
+{ "alunoId": 1, "aulaId": 1 }
+
+### 6. Matricular aluno -> 201
+POST {{host}}/matriculas
+Content-Type: application/json
+
+{ "alunoId": 1, "planoId": 1, "dataInicio": "2030-01-01" }
+
+### 7. Matricular de novo (já tem matrícula ativa) -> 409
+POST {{host}}/matriculas
+Content-Type: application/json
+
+{ "alunoId": 1, "planoId": 1, "dataInicio": "2030-01-01" }
+
+### 8. Reservar aula -> 201
+POST {{host}}/reservas
+Content-Type: application/json
+
+{ "alunoId": 1, "aulaId": 1 }
+
+### 9. Reservar a mesma aula -> 409
+POST {{host}}/reservas
+Content-Type: application/json
+
+{ "alunoId": 1, "aulaId": 1 }
+
+### 10. Ver vagas disponíveis da aula -> 200 (vagasDisponiveis = 0)
+GET {{host}}/aulas/1
+
+### 11. Cancelar reserva -> 200
+PATCH {{host}}/reservas/1/cancelar
+
+### 12. Cancelar de novo -> 422
+PATCH {{host}}/reservas/1/cancelar
+
+### 13. Remover plano que tem matrículas -> 409
+DELETE {{host}}/planos/1
+
+### 14. Atualizar aluno -> 200
+PUT {{host}}/alunos/1
+Content-Type: application/json
+
+{ "nome": "Carlos Lima Souza", "email": "carlos@email.com", "cpf": "12345678901", "dataNascimento": "1995-05-10" }
+
+### 15. Cancelar matrícula -> 200
+PATCH {{host}}/matriculas/1/cancelar
+
+### 16. Buscar inexistente -> 404
+GET {{host}}/alunos/999
